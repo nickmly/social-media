@@ -7,26 +7,43 @@
                 <span>SUBMIT A POST</span>
             </div>
             <div class="content">
-                <form action="/post/" method="POST">
-                    <div class="ui fluid input">
-                        <input type="text" name="title" placeholder="Title">
-                    </div>
-                    <div class="ui hidden divider"></div>
-                    <div class="ui fluid input">
-                        <input type="text" name="link" placeholder="Link">
-                    </div>
-                    <div class="ui hidden divider"></div>
-                    <div class="ui fluid input">
-                        <input type="text" name="content" placeholder="Content">
-                    </div>
-                    <div class="ui hidden divider"></div>
-                    <button class="ui positive button">Submit</button>
-                </form>
+                <div class="ui secondary pointing orange tabular menu">
+                    <div class="item active" data-tab="link-tab">Link</div>
+                    <div class="item" data-tab="text-tab">Text</div>
+                </div>
+                <div class="ui tab active" data-tab="link-tab">
+                    <form class="ui form" action="/post/" method="POST">
+                        <div class="ui field fluid input">
+                            <input type="text" name="title" placeholder="Title">
+                        </div>
+                        <div class="ui field fluid input">
+                            <input type="text" name="link" placeholder="Link">
+                        </div>
+                        <div class="ui field fluid input">
+                            <input type="text" name="content" placeholder="Content">
+                        </div>
+                        <button class="ui orange button">Submit</button>
+                    </form>
+                </div> 
+                <div class="ui tab" data-tab="text-tab">
+                    <form class="ui form" action="/post/" method="POST">
+                        <div class="ui field fluid input">
+                            <input type="text" name="title" placeholder="Title">
+                        </div>
+                        <div class="ui hidden divider"></div>
+                        <div class="ui field fluid input">
+                            <input type="text" name="content" placeholder="Content">
+                        </div>
+                        <div class="ui hidden divider"></div>
+                        <button class="ui orange button">Submit</button>
+                    </form>
+                </div>  
             </div>
         </div>
+        
         <% if (posts.length > 0) { %>
             <% posts.forEach(function(post){ %>
-                <div class="ui fluid card">
+                <div class="ui card">
                     <div class="content">
                         <div class="header">
                             <%= post.title %>
@@ -34,20 +51,32 @@
                     </div>
                     <div class="content">
                         <%= post.content %>
-                    </div>
-                    <div class="ui bottom attached button">
-                        Read More
-                    </div>
+                    </div>                    
+                    <a href="/post/<%= post._id %>" class="ui animated bottom button">
+                        <div class="visible content">
+                            Read More
+                        </div>
+                        <div class="hidden content">
+                            <i class="chevron circle right icon"></i>
+                        </div>                        
+                    </a>
                 </div>
                 <% }); %>
         <% } else { %>
-            <p>No posts yet!</p>
+            <div class="ui segment">
+                <p>No posts yet!</p>
+            </div>
         <% } %>
     </div>
     <!-- TODO: PUT THIS IN ANOTHER FILE -->
-    <script language='javascript'>
+    <script language='javascript'>        
         $(document).ready(function () {
-            $('.ui.accordion').accordion();
+            $('.tabular.menu .item').tab({
+                history: false
+            });
+            $('.ui.accordion').accordion({
+                animateChildren: false
+            });            
         });
     </script>
 
