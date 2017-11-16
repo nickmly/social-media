@@ -12,6 +12,7 @@ var express = require('express'),
 ////////////////////////////////
 ////////////////////////////////
 
+mongoose.connect("mongodb://localhost/social-media");
 // Use body parser
 app.use(bodyParser.urlencoded({extended: true}));
 // Use public directory 
@@ -23,9 +24,15 @@ app.set("view engine", "ejs");
 ////////////////////////////////
 // ROUTES
 ////////////////////////////////
+var postRoutes = require('./routes/posts.js');
+
+
+app.use(postRoutes);
 app.get("/", function(req,res){
     res.render("landing");
 });
+
+
 
 ////////////////////////////////
 ////////////////////////////////
