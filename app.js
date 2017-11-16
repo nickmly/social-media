@@ -20,16 +20,31 @@ app.use(express.static(__dirname + "/public"));
 // So we don't have to type in .ejs for every res.render call
 app.set("view engine", "ejs");
 
+////////////////////////////////
+// MODELS
+////////////////////////////////
+var Post = require('./models/post.js');
+////////////////////////////////
+////////////////////////////////
 
 ////////////////////////////////
 // ROUTES
 ////////////////////////////////
 var postRoutes = require('./routes/posts.js');
-
-
 app.use(postRoutes);
+
+// SEED DB
+Post.remove({}, function(err){
+    console.log("emptied posts db");
+});
+//
+
 app.get("/", function(req,res){
-    res.render("landing");
+    Post.find({}, function(err,posts){
+        if(err)
+            return console.log(err);
+        res.render("landing", {posts: posts});
+    });
 });
 
 
