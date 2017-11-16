@@ -46,11 +46,34 @@
                 <div class="ui card">
                     <div class="content">
                         <div class="header">
-                            <%= post.title %>
+                            <% if(post.link) { %>
+                                <a href="<%= post.link %>">
+                                    <%= post.title.substring(0,20) %>
+                                </a>
+                            <% } else { %>
+                                <%= post.title.substring(0,20) %>
+                            <% } %>
+                            
+                            <% if(post.title.length > 20) { %>
+                                ...
+                            <% } %>
+                            <% if(post.isImage) { %>
+                                <i class="image right floated icon"></i>
+                            <% } else if(post.isVideo) { %>
+                                <i class="film right floated icon"></i>
+                            <% } else if(post.link) { %>
+                                <i class="linkify right floated icon"></i>
+                            <% } %>
                         </div>
                     </div>
                     <div class="content">
-                        <%= post.content %>
+                        <%= post.content.substring(0,50) %>
+                        <% if(post.content.length > 50) { %>
+                            ...
+                        <% } %>
+                        <% if(post.isImage) { %>
+                            <img class="ui image" src="<%= post.link %>">
+                        <% } %>
                     </div>                    
                     <a href="/post/<%= post._id %>" class="ui animated bottom button">
                         <div class="visible content">
