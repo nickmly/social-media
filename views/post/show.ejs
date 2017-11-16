@@ -1,8 +1,21 @@
 <% include ../partials/header %>
 <div class="ui container">
     <div class="ui segment">
-        <h1><%= post.title %></h1>
+        <% if(post.link) { %>
+            <a href="<%= post.link %>">
+                <h1><%= post.title %></h1>
+            </a>
+        <% } else { %>
+            <h1><%= post.title %></h1>
+        <% } %>
         <p><%= post.content %></p>
+        <% if(post.isImage) { %>
+            <img class="ui image" src="<%= post.link %>">
+        <% } else if(post.isVideo) { %>
+            <video class="ui fluid" width="100%" autoplay controls loop>
+                <source src="<%= post.link %>">
+            </video>
+        <% } %>
     </div>
 </div>
 <% include ../partials/footer %>

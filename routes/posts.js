@@ -15,12 +15,16 @@ router.get("/post/:post_id", function(req,res){
 
 router.post("/post", function(req,res){
     var title = req.body.title;
-    var link = req.body.link;
+    var link = convertGifvToVideo(req.body.link); // Converts to video file if it's a gifv
     var content = req.body.content;
+    var isImage = checkIfImage(link);
+    var isVideo = checkIfVideo(link);
     Post.create({
         title: title,
         link: link,
-        content: content
+        content: content,
+        isImage: isImage,
+        isVideo: isVideo
     }, function(err, post){
         if(err)
             return console.log(err);
@@ -28,5 +32,30 @@ router.post("/post", function(req,res){
     });
     
 })
+
+// Check if url ends with an image filetype
+function checkIfImage(url){
+    if(url == null)
+        return false;
+    return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+
+// Convert gifv links to mp4
+function convertGifvToVideo(url){
+    if(url == null)
+        return null;
+
+    if(url.match(/\.(gifv)$/) != null) {
+        url = url.slice(0, url.length - 5);
+        url = url.concat(".mp4"); 
+    }
+    return url;
+}
+
+function checkIfVideo(url) {
+    if(url == null)
+        return false;    
+    return (url.match(/\.(webm|mp4)$/) != null);
+}
 
 module.exports = router;
