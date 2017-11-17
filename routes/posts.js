@@ -35,6 +35,10 @@ router.post("/post", function(req,res){
         post.author.id = req.user._id;
         post.author.username = req.user.username;
         post.save();
+
+        req.user.posts.push(post);
+        req.user.save();
+
         res.redirect("/"); // Redirect to index page
     });
     
@@ -42,6 +46,9 @@ router.post("/post", function(req,res){
 
 // Gets the type of link for a url
 function getLinkType(url){
+    if(url == null)
+        return "Text";
+
     if(checkIfImage(url))
         return "Image";
     else if(checkIfVideo(url))

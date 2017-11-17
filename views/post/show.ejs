@@ -8,7 +8,8 @@
         <% } else { %>
             <h1><%= post.title %></h1>
         <% } %>
-        <em>Submitted by <%= post.author.username %></em>
+        <em>Submitted by <a href="/user/<%= post.author.id %>"><%= post.author.username %></a></em>
+        <div class="ui divider"></div>
         <p><%= post.content %></p>
         <% switch(post.linkType) { 
             case "Image": %>
@@ -59,7 +60,7 @@
                             <%= comment.text %>
                         </div>
                         <div class="description">
-                             <em>By <%= comment.author.username %></em>
+                             <em>By <a href="/user/<%= comment.author.id %>"><%= comment.author.username %></a></em>
                         </div>
                     </div>
                 </div>     

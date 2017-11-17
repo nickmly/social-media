@@ -1,0 +1,44 @@
+<% include ../partials/header %>
+<div class="ui container">
+    <div class="ui fluid card">
+        <div class="content">
+            <div class="header">
+                <%= user.username %>'s Submissions
+            </div>
+        </div>
+        <div class="content">
+            <% if(user.posts.length > 0) { %>
+                <div class="ui relaxed divided list">
+                    <% user.posts.forEach(function(post){ %>
+                        <div class="item">
+                            <% switch(post.linkType) { 
+                                    case "Image": %>
+                                    <i class="big image middle aligned icon"></i>
+                                <% break; 
+                                    case "Video": %>
+                                    <i class="big film middle aligned icon"></i>
+                                <% break;
+                                    case "Youtube": %>
+                                    <i class="big youtube middle aligned icon"></i>
+                                <% break;
+                                    case "Text": %>
+                                    <i class="big talk middle aligned icon"></i>
+                                <% break;
+                                    default: %>
+                                    <i class="big linkify middle aligned icon"></i>
+                                <% break;
+                            } %>
+                            
+                            <div class="content">
+                                <a class="header" href="/post/<%= post._id %>"><%= post.title %></a>
+                            </div>                        
+                        </div>
+                    <% }); %>               
+                </div>
+            <% } else { %>
+                <p>No submissions here.</p>
+            <% } %>            
+        </div>
+    </div>
+</div>
+<% include ../partials/footer %>
