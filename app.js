@@ -61,10 +61,10 @@ app.use(authRoutes);
 app.use(postRoutes);
 
 // SEED DB
-// Post.remove({}, function(err){
-//     console.log("emptied posts db");
-// });
-//
+Post.remove({}, function(err){
+    console.log("emptied posts db");
+});
+
 
 app.get("/", function(req,res){
     Post.find({}, function(err,posts){

@@ -9,17 +9,21 @@
             <h1><%= post.title %></h1>
         <% } %>
         <p><%= post.content %></p>
-        <% if(post.isImage) { %>
+        <% switch(post.linkType) { 
+            case "Image": %>
             <img class="ui image" src="<%= post.link %>">
-        <% } else if(post.isVideo) { %>
+            <% break; 
+                case "Video": %>
             <video class="ui fluid" width="100%" autoplay controls loop>
                 <source src="<%= post.link %>">
             </video>
-        <% } else if(post.isYoutube) { %>
+            <% break;
+                case "Youtube": %>
             <div class="yt-video-box">            
                 <iframe class="yt-video" src="<%= post.link %>" frameborder="0" allowfullscreen></iframe>
             </div>
-        <% } %>
+            <% break;
+        } %>
     </div>
 </div>
 <% include ../partials/footer %>

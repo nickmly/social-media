@@ -74,17 +74,22 @@
                             <% if(post.content.length > 100) { %>
                                 ...
                             <% } %>
-                            <% if(post.isImage) { %>
-                                <img class="ui image" src="<%= post.link %>">
-                            <% } else if(post.isVideo) { %>
+                            
+                            <% switch(post.linkType) { 
+                                    case "Image": %>
+                                    <img class="ui image" src="<%= post.link %>">
+                                <% break; 
+                                    case "Video": %>
                                 <video class="ui fluid" width="100%" autoplay controls loop>
                                     <source src="<%= post.link %>">
                                 </video>
-                            <% } else if(post.isYoutube) { %>
+                                <% break;
+                                    case "Youtube": %>
                                 <div class="yt-video-box">            
                                     <iframe class="yt-video" src="<%= post.link %>" frameborder="0" allowfullscreen></iframe>
                                 </div>
-                            <% } %>
+                                <% break;
+                            } %>
                         </div>                    
                         <a href="/post/<%= post._id %>" class="ui animated bottom attached button">
                             <div class="visible content">
