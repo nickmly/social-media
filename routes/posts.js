@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Post = require('../models/post.js');
 
-
-
 router.get("/post/:post_id", function(req,res){
     Post.findById(req.params.post_id, function(err,post){
         if(err)
