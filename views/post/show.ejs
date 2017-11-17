@@ -8,6 +8,7 @@
         <% } else { %>
             <h1><%= post.title %></h1>
         <% } %>
+        <em>Submitted by <%= post.author.username %></em>
         <p><%= post.content %></p>
         <% switch(post.linkType) { 
             case "Image": %>
@@ -37,7 +38,10 @@
                     <input type="text" name="comment[text]" placeholder="Comment">
                 </div>
                 <div class="ui field">
-                    <button class="ui button orange">Add Comment</button>
+                    <button class="ui right labeled icon orange button">
+                        <i class="send icon"></i>
+                        Add Comment
+                    </button>
                 </div>
             </form>
             <% } else { %>
@@ -46,7 +50,7 @@
         </div> 
     </div>
     <div class="ui relaxed divided list">
-        <h3>Comments</h3>
+       <h3 class="inline-text">Comments </h3> <i class="comment icon"></i>
         <% if(post.comments.length > 0) { %>
             <% post.comments.forEach(function(comment) { %>
                 <div class="item">

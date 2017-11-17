@@ -1,2 +1,13 @@
+<script language="javascript">
+    $(document).ready(function(){
+        var route = window.location.pathname.substring(1,window.location.pathname.length);
+        $(".navbar.ui.menu .item").removeClass("active");
+        if(route == "") {
+            $("#btn-home").addClass('active');
+        } else {
+            $("#btn-" + route).addClass('active');
+        }        
+    });
+</script>
 </body>
 </html>
