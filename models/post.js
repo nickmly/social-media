@@ -4,7 +4,8 @@ var postSchema = new mongoose.Schema({
     link: String,
     content: String,
     isImage: Boolean,
-    isVideo: Boolean
+    isVideo: Boolean,
+    isYoutube: Boolean
 });
 
 module.exports = mongoose.model("Post", postSchema);

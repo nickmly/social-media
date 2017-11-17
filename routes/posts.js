@@ -17,12 +17,18 @@ router.post("/post", function(req,res){
     var content = req.body.content;
     var isImage = checkIfImage(link);
     var isVideo = checkIfVideo(link);
+    var isYoutube = checkIfYoutube(link);
+
+    if(isYoutube)
+        link = convertYoutubeLink(link);
+
     Post.create({
         title: title,
         link: link,
         content: content,
         isImage: isImage,
-        isVideo: isVideo
+        isVideo: isVideo,
+        isYoutube: isYoutube
     }, function(err, post){
         if(err)
             return console.log(err);
@@ -54,6 +60,19 @@ function checkIfVideo(url) {
     if(url == null)
         return false;    
     return (url.match(/\.(webm|mp4)$/) != null);
+}
+
+function checkIfYoutube(url) {
+    if(url == null)
+        return false;
+    return (url.match(/(?:(?:https?:\/\/)(?:www)?\.?(?:youtu\.?be)(?:\.com)?\/(?:.*[=/])*)([^= &?/\r\n]{8,11})/g) != null);
+}
+
+// Convert youtube link to an embed link
+function convertYoutubeLink(url) {
+
+    url = url.replace("watch?v=", "embed/");
+    return url;
 }
 
 module.exports = router;
