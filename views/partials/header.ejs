@@ -14,29 +14,27 @@
 </head>
 
 <body>
-    <div class="ui secondary pointing orange menu">        
-        <a href="/" class="active item">
-            Home
+    <div class="navbar ui secondary pointing orange menu">        
+        <a id="btn-home" href="/" class="item">
+            <i class="home icon"></i> Home
         </a>
         <% if(currentUser) { %>
             <div class="right menu">
                 <p class="item">
                     Signed in as <%= currentUser.username %>
                 </p>
-                <a href="/logout" class="item">
-                    Logout
+                <a id="btn-logout" href="/logout" class="item">
+                    <i class="sign out icon"></i> Logout
                 </a>          
             </div>
         <% } else { %>
             <div class="right menu">
-                <a href="/login" class="item">
-                    Login
+                <a id="btn-login" href="/login" class="item">
+                    <i class="sign in icon"></i> Login
                 </a>
-                <a href="/register" class="item">
-                    Sign Up
+                <a id="btn-register" href="/register" class="item">
+                    <i class="add user icon"></i>Sign Up
                 </a>
             </div>
-        <% } %>
-        
-        
+        <% } %>     
     </div>

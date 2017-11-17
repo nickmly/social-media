@@ -32,7 +32,9 @@ router.post("/post", function(req,res){
     }, function(err, post){
         if(err)
             return console.log(err);
-
+        post.author.id = req.user._id;
+        post.author.username = req.user.username;
+        post.save();
         res.redirect("/"); // Redirect to index page
     });
     
