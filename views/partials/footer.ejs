@@ -4,9 +4,9 @@
         $(".navbar.ui.menu .item").removeClass("active");
         if(route == "") {
             $("#btn-home").addClass('active');
-        } else {
+        } else if(route.substring(0,4) != "user") {
             $("#btn-" + route).addClass('active');
-        }        
+        }   
     });
 </script>
 </body>

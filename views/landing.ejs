@@ -70,6 +70,7 @@
                                 <% if(post.title.length > 70) { %>
                                     ...
                                 <% } %>
+                                
                                 <!-- <% if(post.isImage) { %>
                                     <i class="image right floated icon"></i>
                                 <% } else if(post.isVideo) { %>
@@ -100,7 +101,8 @@
                                 </div>
                                 <% break;
                             } %>
-                        </div>                    
+                        </div>
+                        <em>Submitted by <a href="/user/<%= post.author.id %>"><%= post.author.username %></a></em>                  
                         <a href="/post/<%= post._id %>" class="ui animated bottom attached button">
                             <div class="visible content">
                                 Read More
@@ -108,7 +110,7 @@
                             <div class="hidden content">
                                 <i class="chevron circle right icon"></i>
                             </div>                        
-                        </a>
+                        </a>                       
                     </div>
                     <% }); %>
                 </div>

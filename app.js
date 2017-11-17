@@ -59,9 +59,11 @@ app.use(function(req,res,next){
 var postRoutes = require('./routes/posts.js');
 var authRoutes = require('./routes/index.js');
 var commentRoutes = require('./routes/comments.js');
+var userRoutes = require('./routes/users.js');
 app.use(authRoutes);
 app.use(postRoutes);
 app.use(commentRoutes);
+app.use(userRoutes);
 
 // SEED DB
 // Post.remove({}, function(err){

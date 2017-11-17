@@ -20,9 +20,7 @@
         </a>
         <% if(currentUser) { %>
             <div class="right menu">
-                <p class="item">
-                    Signed in as <%= currentUser.username %>
-                </p>
+                <a class="item" href="/user/<%= currentUser._id %>">My Profile</a>               
                 <a id="btn-logout" href="/logout" class="item">
                     <i class="sign out icon"></i> Logout
                 </a>          
