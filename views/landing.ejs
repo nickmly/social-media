@@ -80,6 +80,10 @@
                                 <video class="ui fluid" width="100%" autoplay controls loop>
                                     <source src="<%= post.link %>">
                                 </video>
+                            <% } else if(post.isYoutube) { %>
+                                <div class="yt-video-box">            
+                                    <iframe class="yt-video" src="<%= post.link %>" frameborder="0" allowfullscreen></iframe>
+                                </div>
                             <% } %>
                         </div>                    
                         <a href="/post/<%= post._id %>" class="ui animated bottom attached button">

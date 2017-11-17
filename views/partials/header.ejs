@@ -14,19 +14,29 @@
 </head>
 
 <body>
-    <div class="ui secondary pointing orange menu">
+    <div class="ui secondary pointing orange menu">        
         <a href="/" class="active item">
             Home
         </a>
-        <a href="/login" class="item">
-            Login
-        </a>
-        <a href="/register" class="item">
-            Signup
-        </a>
-        <div class="right menu">
-            <a href="/logout" class="item">
-                Logout
-            </a>
-        </div>
+        <% if(currentUser) { %>
+            <div class="right menu">
+                <p class="item">
+                    Signed in as <%= currentUser.username %>
+                </p>
+                <a href="/logout" class="item">
+                    Logout
+                </a>          
+            </div>
+        <% } else { %>
+            <div class="right menu">
+                <a href="/login" class="item">
+                    Login
+                </a>
+                <a href="/register" class="item">
+                    Sign Up
+                </a>
+            </div>
+        <% } %>
+        
+        
     </div>
