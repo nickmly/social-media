@@ -26,6 +26,7 @@ app.set("view engine", "ejs");
 ////////////////////////////////
 var Post = require('./models/post.js');
 var User = require('./models/user.js');
+var Comment = require('./models/comment.js');
 ////////////////////////////////
 ////////////////////////////////
 
@@ -57,13 +58,18 @@ app.use(function(req,res,next){
 
 var postRoutes = require('./routes/posts.js');
 var authRoutes = require('./routes/index.js');
+var commentRoutes = require('./routes/comments.js');
 app.use(authRoutes);
 app.use(postRoutes);
+app.use(commentRoutes);
 
 // SEED DB
-Post.remove({}, function(err){
-    console.log("emptied posts db");
-});
+// Post.remove({}, function(err){
+//     console.log("emptied posts db");
+// });
+// Comment.remove({}, function(err){
+//     console.log("emptied comments db");
+// });
 
 
 app.get("/", function(req,res){

@@ -2,12 +2,14 @@
     <div class="ui container">
         <% if(currentUser) { %>
             <h1>Welcome <%= currentUser.username %></h1>
-            <div class="ui styled fluid accordion">
-                <div class="title">
-                    <i class="dropdown icon"></i>
-                    <span>SUBMIT A POST</span>
-                </div>
-                <div class="content">
+        <% } %> 
+        <div class="ui styled fluid accordion">
+            <div class="title">
+                <i class="dropdown icon"></i>
+                <span>SUBMIT A POST</span>
+            </div>
+            <div class="content">
+                <% if(currentUser) { %>
                     <div class="ui secondary pointing orange tabular menu">
                         <div class="item active" data-tab="link-tab">Link</div>
                         <div class="item" data-tab="text-tab">Text</div>
@@ -39,9 +41,11 @@
                             <button class="ui orange button">Submit</button>
                         </form>
                     </div>  
-                </div>
+                <% } else { %> 
+                    <p>You must be logged in to post.</p>
+                <% } %> 
             </div>
-        <% } %>  
+        </div>         
         <br>  
         <% if (posts.length > 0) { %>
             <div class="ui four cards stackable">   

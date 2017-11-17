@@ -24,6 +24,51 @@
             </div>
             <% break;
         } %>
+    </div>    
+    <div class="ui styled fluid accordion">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            <span>SUBMIT A COMMENT</span>
+        </div>
+        <div class="content">
+            <% if(currentUser) { %>   
+            <form class="ui form" action="/post/<%= post._id %>" method="POST">
+                <div class="ui field">
+                    <input type="text" name="comment[text]" placeholder="Comment">
+                </div>
+                <div class="ui field">
+                    <button class="ui button orange">Add Comment</button>
+                </div>
+            </form>
+            <% } else { %>
+                <p>You must be logged in to comment.</p>
+            <% } %>
+        </div> 
+    </div>
+    <div class="ui relaxed divided list">
+        <h3>Comments</h3>
+        <% if(post.comments.length > 0) { %>
+            <% post.comments.forEach(function(comment) { %>
+                <div class="item">
+                    <div class="content">
+                        <div class="header">
+                            <%= comment.text %>
+                        </div>
+                        <div class="description">
+                             <em>By <%= comment.author.username %></em>
+                        </div>
+                    </div>
+                </div>     
+            <% }) %>
+        <% } else { %>
+            <p>No comments here.</p> 
+        <% } %>
+           
     </div>
 </div>
+<script language='javascript'>
+    $(document).ready(function(){
+        $(".ui.accordion").accordion({animateChildren: false});
+    });
+</script>
 <% include ../partials/footer %>
