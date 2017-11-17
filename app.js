@@ -4,6 +4,7 @@
 
 var express = require('express'),
     app = express(),
+    expressSession = require('express-session'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser')
     passport = require('passport'),
@@ -24,13 +25,39 @@ app.set("view engine", "ejs");
 // MODELS
 ////////////////////////////////
 var Post = require('./models/post.js');
+var User = require('./models/user.js');
+////////////////////////////////
+////////////////////////////////
+
+////////////////////////////////
+// PASSPORT CONFIG
+////////////////////////////////
+app.use(expressSession({
+    secret: "This is a secret",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 ////////////////////////////////
 ////////////////////////////////
 
 ////////////////////////////////
 // ROUTES
 ////////////////////////////////
+
+// Place all this data into every route
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user;
+    next();
+});
+
 var postRoutes = require('./routes/posts.js');
+var authRoutes = require('./routes/index.js');
+app.use(authRoutes);
 app.use(postRoutes);
 
 // SEED DB
