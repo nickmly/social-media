@@ -9,23 +9,47 @@
     </a>
 </div>
 <script language="javascript">
-    $(document).ready(function(){
         $(".ui.message .icon").on("click", function(){
             $(this).parent().hide();
         });
         $(".btn-rating.btn-like").on('click', function(){
-            $(this).siblings().removeClass("active").removeClass("red");
-            $(this).toggleClass("blue").toggleClass("active");
+            $(this).siblings().find("div:nth-of-type(2)").removeClass("active").removeClass("red");
+            $(this).find("div:first").toggleClass("blue").toggleClass("active");
+            var post_id = $(this).attr('id');
+            post_id = post_id.substring(1, $(this).attr('id').length);
+            $.ajax({
+                type: 'GET',
+                data: {
+                    text: "liked post"
+                },
+                url: "/post/" + post_id + "/like",
+                success: function(data){
+                    $(this).find("div:nth-of-type(2) > span").text(data);
+                }
+            });
         });
         $(".btn-rating.btn-dislike").on('click', function(){
-            $(this).siblings().removeClass("active").removeClass("blue");
-            $(this).toggleClass("red").toggleClass("active");
+            $(this).siblings().find("div:first").removeClass("active").removeClass("blue");
+            $(this).find("div:nth-of-type(2)").toggleClass("red").toggleClass("active");
+            var post_id = $(this).attr('id');
+            post_id = post_id.substring(1, $(this).attr('id').length);
+            $.ajax({
+                type: 'GET',
+                data: {
+                    text: "disliked post"
+                },
+                url: "/post/" + post_id + "/dislike",
+                success: function(data){
+                    $(this).find("div:first > span").text(data);
+                }
+            });
         });
+    $(document).ready(function(){        
         var route = window.location.pathname.substring(1,window.location.pathname.length);
         $(".navbar.ui.menu .item").removeClass("active");
         if(route == "") {
             $("#btn-home").addClass('active');
-        } else if(route.substring(0,4) != "user") {
+        } else if(route.substring(0,4) != "user" && route.substring(0,4) != "post") {
             $("#btn-" + route).addClass('active');
         }   
     });

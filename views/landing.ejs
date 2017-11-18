@@ -17,10 +17,10 @@
                     <div class="ui tab active" data-tab="link-tab">
                         <form class="ui form" action="/post/" method="POST">
                             <div class="ui field fluid input">
-                                <input type="text" name="title" placeholder="Title">
+                                <input type="text" name="title" placeholder="Title" required>
                             </div>
                             <div class="ui field fluid input">
-                                <input type="text" name="link" placeholder="Link">
+                                <input type="text" name="link" placeholder="Link" required>
                             </div>
                             <div class="ui field fluid input">
                                 <input type="text" name="content" placeholder="Content">
@@ -34,11 +34,11 @@
                     <div class="ui tab" data-tab="text-tab">
                         <form class="ui form" action="/post/" method="POST">
                             <div class="ui field fluid input">
-                                <input type="text" name="title" placeholder="Title">
+                                <input type="text" name="title" placeholder="Title" required>
                             </div>
                             <div class="ui hidden divider"></div>
                             <div class="ui field fluid input">
-                                <textarea placeholder="Enter text here" rows="4" cols="50" name="content"></textarea>
+                                <textarea placeholder="Enter text here" rows="4" cols="50" name="content" required></textarea>
                             </div>
                             <div class="ui hidden divider"></div>
                             <button class="ui right labeled icon orange button">
@@ -103,14 +103,23 @@
                             } %>
                         </div>
                         <em>Submitted by <a href="/user/<%= post.author.id %>"><%= post.author.username %></a></em>
-                        <div class="ui two buttons">
-                            <div class="ui bottom attached button btn-rating btn-like">
-                                <i class="ui thumbs up icon"></i>
-                            </div>
-                            <div class="ui bottom attached button btn-rating btn-dislike">
-                                <div class="btn-rating"><i class="ui thumbs down icon"></i>
+                        <div class="ui two compact buttons">                           
+                            <a id="l<%= post._id %>" class="ui labeled button btn-rating btn-like">
+                                <div class="ui left attached button">
+                                    <i class="ui left floated thumbs up icon"></i>
                                 </div>
-                            </div>
+                                <div class="ui blue left pointing label">
+                                    <span><%= post.likes %></span>
+                                </div>                                                       
+                            </a>                                   
+                            <a id="d<%= post._id %>" class="ui labeled button btn-rating btn-dislike">
+                                <div class="ui red right pointing label">
+                                    <span><%= post.dislikes %></span>
+                                </div>
+                                <div class="ui right attached button">
+                                   <i class="ui right floated thumbs down icon"></i>
+                                </div>
+                            </a>
                         </div>                                 
                         <a href="/post/<%= post._id %>" class="ui animated bottom attached button">
                             <div class="visible content">

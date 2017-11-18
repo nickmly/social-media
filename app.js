@@ -14,7 +14,8 @@ var express = require('express'),
 ////////////////////////////////
 ////////////////////////////////
 // Connect to mongoDB
-mongoose.connect("mongodb://nick:assface123@ds113606.mlab.com:13606/social-media");
+//mongoose.connect("mongodb://nick:assface123@ds113606.mlab.com:13606/social-media");
+mongoose.connect("mongodb://localhost/social-media");
 // Use body parser
 app.use(bodyParser.urlencoded({extended: true}));
 // Use public directory 
@@ -72,6 +73,9 @@ app.use(commentRoutes);
 app.use(userRoutes);
 
 // SEED DB
+// User.remove({}, function(err){
+//     console.log("emptied users db");
+// });
 // Post.remove({}, function(err){
 //     console.log("emptied posts db");
 // });

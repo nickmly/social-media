@@ -30,7 +30,9 @@ router.post("/post", isLoggedIn, function(req,res){
         title: title,
         link: link,
         content: content,
-        linkType: linkType        
+        linkType: linkType,
+        likes: 0,
+        dislikes: 0      
     }, function(err, post){
         if(err)
             return console.log(err);
@@ -42,9 +44,66 @@ router.post("/post", isLoggedIn, function(req,res){
         req.user.save();
 
         res.redirect("/"); // Redirect to index page
-    });
-    
+    });    
 })
+
+////////////////////////////////////
+// TODO: Replace these with ajax requests
+////////////////////////////////////
+
+// LIKED A POST
+router.get("/post/:post_id/like", function(req,res){
+    console.log(req.query);
+    Post.findById(req.params.post_id, function(err,post){
+        if(err) {
+            console.log("Failed to like post: " + err);
+        }
+        post.likes += 1;    
+        post.save();
+        res.send(String(post.likes));
+        
+    });
+});
+
+// DISLIKE A POST
+router.get("/post/:post_id/dislike", function(req,res){
+    console.log(req.query);
+    Post.findById(req.params.post_id, function(err,post){
+        if(err) {
+            console.log("Failed to dislike post: " + err);
+        }
+        post.dislikes += 1;    
+        post.save();
+        res.send(String(post.dislikes));
+        
+    });
+});
+
+
+function doesUserLikePost(user, id){
+    user.likedPosts.forEach(function(post){
+        if(post._id.equals(id)) {
+            console.log("Found post");
+            return true;
+        }
+    });
+
+    console.log("Didn't find post");
+    return false;
+}
+
+function doesUserDislikePost(user, id){
+    user.dislikedPosts.find({_id: id }, function(err, foundPost){
+        if(err) {
+            console.log("Didn't find post");
+            return false;          
+        } else {
+            console.log("Found post");
+            return true;
+        }        
+    });
+    return false;
+}
 
 // Gets the type of link for a url
 function getLinkType(url){

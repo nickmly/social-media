@@ -7,8 +7,11 @@ var router = express.Router();
 
 router.get("/", function(req,res){
     Post.find({}, function(err,posts){
-        if(err)
+        if(err){
+            req.flash("error", err.message);
             return console.log(err);
+        }
+            
         res.render("landing", {posts: posts});
     });
 });
@@ -34,6 +37,7 @@ router.post("/register", function(req,res){
     var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, user){
         if(err) {
+            req.flash("error", err.message);
             return res.redirect("/register");
         }
         passport.authenticate("local")(req, res, function() {

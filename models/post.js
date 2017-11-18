@@ -4,6 +4,8 @@ var postSchema = new mongoose.Schema({
     link: String,
     content: String,
     linkType: String,
+    likes: Number,
+    dislikes: Number,
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
