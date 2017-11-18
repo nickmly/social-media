@@ -3,8 +3,12 @@ var router = express.Router();
 var Post = require('../models/post.js');
 var Comment = require('../models/comment.js');
 
+
+var middleware = require('../middleware');
+var isLoggedIn = middleware.isLoggedIn;
+
 // CREATE COMMENT
-router.post("/post/:post_id/", function(req,res){
+router.post("/post/:post_id/", isLoggedIn, function(req,res){
     Post.findById(req.params.post_id, function(err,post){ // Find associated post for this comment
         if(err)
             return console.log(err);

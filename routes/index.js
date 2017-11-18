@@ -1,7 +1,17 @@
 var express = require('express');
 var passport = require('passport');
 var User = require('../models/user.js');
+var Post = require('../models/post.js');
 var router = express.Router();
+
+
+router.get("/", function(req,res){
+    Post.find({}, function(err,posts){
+        if(err)
+            return console.log(err);
+        res.render("landing", {posts: posts});
+    });
+});
 
 router.get("/login", function(req,res){
     res.render("auth/login");
@@ -9,7 +19,9 @@ router.get("/login", function(req,res){
 
 router.post("/login", passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/login"
+    failureRedirect: "/login",
+    failureFlash: "Invalid username or password",
+    successFlash: "Logged in successfully."
 }), function(req,res) {
 
 });
@@ -25,6 +37,7 @@ router.post("/register", function(req,res){
             return res.redirect("/register");
         }
         passport.authenticate("local")(req, res, function() {
+            req.flash("success", "Signed up successfully! Welcome " + user.username);
             res.redirect("/");
         });
     });
@@ -32,6 +45,7 @@ router.post("/register", function(req,res){
 
 router.get("/logout", function(req,res){
     req.logout();
+    req.flash("success", "Logged out successfully.");
     res.redirect("/");
 });
 

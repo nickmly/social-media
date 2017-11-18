@@ -1,5 +1,26 @@
+<div id="bottom-navbar" class="ui fluid menu">
+    <a class="ui animated fluid button" href="https://github.com/nickmly/social-media">
+        <div class="visible content">
+            <i class="large github icon"></i>
+        </div>
+        <div class="hidden content">
+            View the code on GitHub<i class="github icon"></i>
+        </div>
+    </a>
+</div>
 <script language="javascript">
     $(document).ready(function(){
+        $(".ui.message .icon").on("click", function(){
+            $(this).parent().hide();
+        });
+        $(".btn-rating.btn-like").on('click', function(){
+            $(this).siblings().removeClass("active").removeClass("red");
+            $(this).toggleClass("blue").toggleClass("active");
+        });
+        $(".btn-rating.btn-dislike").on('click', function(){
+            $(this).siblings().removeClass("active").removeClass("blue");
+            $(this).toggleClass("red").toggleClass("active");
+        });
         var route = window.location.pathname.substring(1,window.location.pathname.length);
         $(".navbar.ui.menu .item").removeClass("active");
         if(route == "") {

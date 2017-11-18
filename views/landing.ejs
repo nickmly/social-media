@@ -102,7 +102,16 @@
                                 <% break;
                             } %>
                         </div>
-                        <em>Submitted by <a href="/user/<%= post.author.id %>"><%= post.author.username %></a></em>                  
+                        <em>Submitted by <a href="/user/<%= post.author.id %>"><%= post.author.username %></a></em>
+                        <div class="ui two buttons">
+                            <div class="ui bottom attached button btn-rating btn-like">
+                                <i class="ui thumbs up icon"></i>
+                            </div>
+                            <div class="ui bottom attached button btn-rating btn-dislike">
+                                <div class="btn-rating"><i class="ui thumbs down icon"></i>
+                                </div>
+                            </div>
+                        </div>                                 
                         <a href="/post/<%= post._id %>" class="ui animated bottom attached button">
                             <div class="visible content">
                                 Read More
