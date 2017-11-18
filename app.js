@@ -5,6 +5,7 @@
 var express = require('express'),
     app = express(),
     expressSession = require('express-session'),
+    flash = require('connect-flash-plus'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser')
     passport = require('passport'),
@@ -12,7 +13,7 @@ var express = require('express'),
 
 ////////////////////////////////
 ////////////////////////////////
-
+// Connect to mongoDB
 mongoose.connect("mongodb://localhost/social-media");
 // Use body parser
 app.use(bodyParser.urlencoded({extended: true}));
@@ -20,6 +21,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 // So we don't have to type in .ejs for every res.render call
 app.set("view engine", "ejs");
+// For flash messages
+app.use(flash());
 
 ////////////////////////////////
 // MODELS
@@ -34,7 +37,7 @@ var Comment = require('./models/comment.js');
 // PASSPORT CONFIG
 ////////////////////////////////
 app.use(expressSession({
-    secret: "This is a secret",
+    secret: "secretmsgforsocialmedia",
     resave: false,
     saveUninitialized: false
 }));
@@ -53,6 +56,8 @@ passport.deserializeUser(User.deserializeUser());
 // Place all this data into every route
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
@@ -60,6 +65,7 @@ var postRoutes = require('./routes/posts.js');
 var authRoutes = require('./routes/index.js');
 var commentRoutes = require('./routes/comments.js');
 var userRoutes = require('./routes/users.js');
+
 app.use(authRoutes);
 app.use(postRoutes);
 app.use(commentRoutes);
@@ -73,13 +79,9 @@ app.use(userRoutes);
 //     console.log("emptied comments db");
 // });
 
-
-app.get("/", function(req,res){
-    Post.find({}, function(err,posts){
-        if(err)
-            return console.log(err);
-        res.render("landing", {posts: posts});
-    });
+app.get("*", function(req,res){
+    req.flash("error", "Page not found");
+    res.redirect("/");
 });
 
 

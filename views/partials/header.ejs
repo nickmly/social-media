@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    
     <div class="navbar ui secondary pointing orange menu">        
         <a id="btn-home" href="/" class="item">
             <i class="home icon"></i> Home
@@ -36,3 +37,21 @@
             </div>
         <% } %>     
     </div>
+    <div class="ui container">
+        <% if(success && success.length > 0) {  %>
+            <div class="ui success message">
+                <i class="close icon"></i>
+                <div class="header">
+                    <%= success %>
+                </div>  
+            </div>
+        <% } else if(error && error.length > 0) { %>
+            <div class="ui error message">
+                <i class="close icon"></i>
+                <div class="header">
+                    <%= error %>
+                </div>  
+            </div>
+        <% } %>
+    </div>
+
