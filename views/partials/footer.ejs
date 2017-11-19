@@ -9,40 +9,68 @@
     </a>
 </div>
 <script language="javascript">
+        window.sendAjax = function(url, successText) {
+            $.ajax({
+                type: 'GET',        
+                url: url,
+                success: function(data){
+                    successText.text(data);
+                }
+            });
+        };
+
+        window.likePost = function(element){
+            var post_id = element.attr('id'); // Post id is stored as the div ID
+            post_id = post_id.substring(1, element.attr('id').length);// Remove first letter from ID
+
+            var likeText = element.find("div:nth-of-type(2) > span");
+            var button = element.find("div:first");
+            var otherButton = element.siblings().find("div:nth-of-type(2)"); // The dislike button
+            var url = "/post/" + post_id + "/like";
+
+            if(button.hasClass("active")) // if already liked remove like
+                url = "/post/" + post_id + "/unlike";
+            else if(otherButton.hasClass("active")) // if we disliked it
+                dislikePost(otherButton.parent()); // remove dislike
+            
+
+            otherButton.removeClass("active").removeClass("red");
+            button.toggleClass("blue").toggleClass("active");         
+            
+            sendAjax(url, likeText);          
+        };
+
+        window.dislikePost = function(element) {
+            var post_id = element.attr('id');
+            post_id = post_id.substring(1, element.attr('id').length);
+
+            var dislikeText = element.find("div:first > span");
+            var button = element.find("div:nth-of-type(2)");
+            var otherButton = element.siblings().find("div:first"); // The like button
+            var url = "/post/" + post_id + "/dislike";
+
+            if(button.hasClass("active"))
+                url = "/post/" + post_id + "/undislike";
+            else if(otherButton.hasClass("active")) // if we liked it
+                likePost(otherButton.parent()); // remove like
+
+            otherButton.removeClass("active").removeClass("blue");
+            button.toggleClass("red").toggleClass("active");            
+            
+            sendAjax(url, dislikeText);
+        };
+
+        
         $(".ui.message .icon").on("click", function(){
             $(this).parent().hide();
         });
-        $(".btn-rating.btn-like").on('click', function(){
-            $(this).siblings().find("div:nth-of-type(2)").removeClass("active").removeClass("red");
-            $(this).find("div:first").toggleClass("blue").toggleClass("active");
-            var post_id = $(this).attr('id');
-            post_id = post_id.substring(1, $(this).attr('id').length);
-            $.ajax({
-                type: 'GET',
-                data: {
-                    text: "liked post"
-                },
-                url: "/post/" + post_id + "/like",
-                success: function(data){
-                    $(this).find("div:nth-of-type(2) > span").text(data);
-                }
-            });
+
+        $(".btn-rating.btn-like").on('click', function(){       
+            likePost($(this));          
+        
         });
         $(".btn-rating.btn-dislike").on('click', function(){
-            $(this).siblings().find("div:first").removeClass("active").removeClass("blue");
-            $(this).find("div:nth-of-type(2)").toggleClass("red").toggleClass("active");
-            var post_id = $(this).attr('id');
-            post_id = post_id.substring(1, $(this).attr('id').length);
-            $.ajax({
-                type: 'GET',
-                data: {
-                    text: "disliked post"
-                },
-                url: "/post/" + post_id + "/dislike",
-                success: function(data){
-                    $(this).find("div:first > span").text(data);
-                }
-            });
+            dislikePost($(this));
         });
     $(document).ready(function(){        
         var route = window.location.pathname.substring(1,window.location.pathname.length);

@@ -53,7 +53,6 @@ router.post("/post", isLoggedIn, function(req,res){
 
 // LIKED A POST
 router.get("/post/:post_id/like", function(req,res){
-    console.log(req.query);
     Post.findById(req.params.post_id, function(err,post){
         if(err) {
             console.log("Failed to like post: " + err);
@@ -65,9 +64,21 @@ router.get("/post/:post_id/like", function(req,res){
     });
 });
 
+// UNLIKE A POST
+router.get("/post/:post_id/unlike", function(req,res){
+    Post.findById(req.params.post_id, function(err,post){
+        if(err) {
+            console.log("Failed to like post: " + err);
+        }
+        post.likes -= 1;    
+        post.save();
+        res.send(String(post.likes));
+        
+    });
+});
+
 // DISLIKE A POST
 router.get("/post/:post_id/dislike", function(req,res){
-    console.log(req.query);
     Post.findById(req.params.post_id, function(err,post){
         if(err) {
             console.log("Failed to dislike post: " + err);
@@ -79,6 +90,18 @@ router.get("/post/:post_id/dislike", function(req,res){
     });
 });
 
+// UNDISLIKE A POST
+router.get("/post/:post_id/undislike", function(req,res){
+    Post.findById(req.params.post_id, function(err,post){
+        if(err) {
+            console.log("Failed to dislike post: " + err);
+        }
+        post.dislikes -= 1;    
+        post.save();
+        res.send(String(post.dislikes));
+        
+    });
+});
 
 function doesUserLikePost(user, id){
     user.likedPosts.forEach(function(post){
@@ -155,7 +178,15 @@ function checkIfYoutube(url) {
 
 // Convert youtube link to an embed link
 function convertYoutubeLink(url) {
-    url = url.replace("watch?v=", "embed/"); // Youtube by default has links that do not work in an iframe, we have to convert them using /embed/
+    var videoID = url.split("v=")[1]; // Get ID and variables
+    if(videoID == null)
+        videoID = url.split("e/")[1]; // If there is no v= in the link, just separate with a slash
+
+    var endPoint = videoID.indexOf("&"); // Find start of variables (time to start video, end video, etc.)
+    if(endPoint != -1) { // If there are any vars
+        videoID = videoID.substring(0, endPoint); // Get 12 digit video ID and leave out vars
+    }
+    url = "https://www.youtube.com/embed/" + videoID;// Youtube by default has links that do not work in an iframe, we have to convert them using /embed/
     return url;
 }
 
