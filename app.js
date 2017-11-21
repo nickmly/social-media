@@ -15,7 +15,7 @@ var express = require('express'),
 ////////////////////////////////
 // Connect to mongoDB
 
-mongoose.connect("mongodb://localhost/social-media");
+mongoose.connect("mongodb://admin:crazypassword@ds113606.mlab.com:13606/social-media");
 // Use body parser
 app.use(bodyParser.urlencoded({extended: true}));
 // Use public directory 
@@ -87,8 +87,6 @@ app.get("*", function(req,res){
     req.flash("error", "Page not found");
     res.redirect("/");
 });
-
-
 
 ////////////////////////////////
 ////////////////////////////////
