@@ -8,11 +8,18 @@
         </div>
     </a>
 </div>
+<% if(currentUser) { %>
+    <div style="display:none;" class="user-id" id="<%= currentUser._id %>"></div>
+<% } %>
 <script language="javascript">
-        window.sendAjax = function(url, successText) {
+        window.sendAjax = function(url, successText) {     
+            var user_id = $(".user-id").attr('id');       
             $.ajax({
-                type: 'GET',        
+                type: 'GET',                   
                 url: url,
+                data: {
+                    user_id: user_id
+                },
                 success: function(data){
                     successText.text(data);
                 }
@@ -20,8 +27,8 @@
         };
 
         window.likePost = function(element){
-            var post_id = element.attr('id'); // Post id is stored as the div ID
-            post_id = post_id.substring(1, element.attr('id').length);// Remove first letter from ID
+            var post_id = element.attr('id'); // Post id is stored as the div 
+            post_id = post_id.substring(1, post_id.length);// Remove first letter from ID            
 
             var likeText = element.find("div:nth-of-type(2) > span");
             var button = element.find("div:first");
@@ -41,8 +48,8 @@
         };
 
         window.dislikePost = function(element) {
-            var post_id = element.attr('id');
-            post_id = post_id.substring(1, element.attr('id').length);
+            var post_id = element.attr('id'); // Post id is stored as the div 
+            post_id = post_id.substring(1, post_id.length);// Remove first letter from ID
 
             var dislikeText = element.find("div:first > span");
             var button = element.find("div:nth-of-type(2)");
@@ -72,7 +79,10 @@
         $(".btn-rating.btn-dislike").on('click', function(){
             dislikePost($(this));
         });
-    $(document).ready(function(){        
+    $(document).ready(function(){    
+
+  
+        
         var route = window.location.pathname.substring(1,window.location.pathname.length);
         $(".navbar.ui.menu .item").removeClass("active");
         if(route == "") {
