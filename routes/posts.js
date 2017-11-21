@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Post = require('../models/post.js');
+var User = require('../models/user.js');
 
 var middleware = require('../middleware');
 var isLoggedIn = middleware.isLoggedIn;
@@ -49,28 +50,31 @@ router.post("/post", isLoggedIn, function(req,res){
 
 // LIKED A POST
 router.get("/post/:post_id/like", function(req,res){
-    
     Post.findById(req.params.post_id, function(err,post){
         if(err) {
             console.log("Failed to like post: " + err);
         }
-        post.likes += 1;    
-        post.save();
-        res.send(String(post.likes));
-        
-    });
-});
 
-// UNLIKE A POST
-router.get("/post/:post_id/unlike", function(req,res){
-    Post.findById(req.params.post_id, function(err,post){
-        if(err) {
-            console.log("Failed to like post: " + err);
-        }
-        post.likes -= 1;    
-        post.save();
-        res.send(String(post.likes));
-        
+        User.findById(req.query.user_id, function(err, user){
+            if(err){
+                console.log("Failed to find user: " + err);
+            } else {
+                if(!doesUserLikePost(user, post._id)) { // user doesn't like post
+                    post.likes += 1;
+                    post.save();
+                    user.likedPosts.push(post);
+                    user.save();
+                    res.send(String(post.likes));
+                } else { // user does like post, so unlike it
+                    post.likes -= 1;    
+                    post.save();
+                    var postToRemove = user.likedPosts.indexOf(post);
+                    user.likedPosts.splice(postToRemove, 1);
+                    user.save();
+                    res.send(String(post.likes));
+                }              
+            }           
+        }); 
     });
 });
 
@@ -80,49 +84,55 @@ router.get("/post/:post_id/dislike", function(req,res){
         if(err) {
             console.log("Failed to dislike post: " + err);
         }
-        post.dislikes += 1;    
-        post.save();
-        res.send(String(post.dislikes));
+
+        User.findById(req.query.user_id, function(err, user){
+            if(err){
+                console.log("Failed to find user: " + err);
+            } else {
+                if(!doesUserDislikePost(user, post._id)) { // user doesn't dislike post
+                    post.dislikes += 1;
+                    post.save();
+                    user.dislikedPosts.push(post);
+                    user.save();
+                    res.send(String(post.dislikes));
+                } else { // user does dislike post, so undislike it
+                    post.dislikes -= 1;    
+                    post.save();
+                    var postToRemove = user.dislikedPosts.indexOf(post);
+                    user.dislikedPosts.splice(postToRemove, 1);
+                    user.save();
+                    res.send(String(post.dislikes));
+                }              
+            }           
+        }); 
         
     });
 });
 
-// UNDISLIKE A POST
-router.get("/post/:post_id/undislike", function(req,res){
-    Post.findById(req.params.post_id, function(err,post){
-        if(err) {
-            console.log("Failed to dislike post: " + err);
-        }
-        post.dislikes -= 1;    
-        post.save();
-        res.send(String(post.dislikes));
-        
-    });
-});
+
 
 function doesUserLikePost(user, id){
+    var result = false;
     user.likedPosts.forEach(function(post){
-        if(post._id.equals(id)) {
-            console.log("Found post");
-            return true;
+        if(post._id.equals(id)) { // Compare the id of the post to see if we have liked it before
+            result = true;
+            return false; // break out of this function
         }
     });
 
-    console.log("Didn't find post");
-    return false;
+    return result;
 }
 
 function doesUserDislikePost(user, id){
-    user.dislikedPosts.find({_id: id }, function(err, foundPost){
-        if(err) {
-            console.log("Didn't find post");
-            return false;          
-        } else {
-            console.log("Found post");
-            return true;
-        }        
+    var result = false;
+    user.dislikedPosts.forEach(function(post){
+        if(post._id.equals(id)) { // Compare the id of the post to see if we have disliked it before
+            result = true;
+            return false; // break out of this function
+        }
     });
-    return false;
+
+    return result;
 }
 
 // Gets the type of link for a url

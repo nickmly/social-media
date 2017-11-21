@@ -35,9 +35,7 @@
             var otherButton = element.siblings().find("div:nth-of-type(2)"); // The dislike button
             var url = "/post/" + post_id + "/like";
 
-            if(button.hasClass("active")) // if already liked remove like
-                url = "/post/" + post_id + "/unlike";
-            else if(otherButton.hasClass("active")) // if we disliked it
+            if(otherButton.hasClass("active")) // if we disliked it
                 dislikePost(otherButton.parent()); // remove dislike
             
 
@@ -56,9 +54,7 @@
             var otherButton = element.siblings().find("div:first"); // The like button
             var url = "/post/" + post_id + "/dislike";
 
-            if(button.hasClass("active"))
-                url = "/post/" + post_id + "/undislike";
-            else if(otherButton.hasClass("active")) // if we liked it
+            if(otherButton.hasClass("active")) // if we liked it
                 likePost(otherButton.parent()); // remove like
 
             otherButton.removeClass("active").removeClass("blue");
@@ -79,10 +75,7 @@
         $(".btn-rating.btn-dislike").on('click', function(){
             dislikePost($(this));
         });
-    $(document).ready(function(){    
-
-  
-        
+    $(document).ready(function(){
         var route = window.location.pathname.substring(1,window.location.pathname.length);
         $(".navbar.ui.menu .item").removeClass("active");
         if(route == "") {
