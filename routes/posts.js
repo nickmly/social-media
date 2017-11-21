@@ -47,12 +47,9 @@ router.post("/post", isLoggedIn, function(req,res){
     });    
 })
 
-////////////////////////////////////
-// TODO: Replace these with ajax requests
-////////////////////////////////////
-
 // LIKED A POST
 router.get("/post/:post_id/like", function(req,res){
+    console.log(req.query);
     Post.findById(req.params.post_id, function(err,post){
         if(err) {
             console.log("Failed to like post: " + err);
