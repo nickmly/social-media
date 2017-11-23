@@ -119,7 +119,6 @@ function doesUserLikePost(user, id){
             return false; // break out of this function
         }
     });
-
     return result;
 }
 

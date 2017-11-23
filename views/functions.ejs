@@ -1,0 +1,21 @@
+<% doesUserLikePost = function(id){ 
+    var result = false;
+     currentUser.likedPosts.forEach(function(post){ 
+         if(post._id.equals(id)) {
+            result = true;
+            return false;
+        } 
+    }); 
+    return result;
+} %>
+
+<% doesUserDislikePost = function(id){ 
+    var result = false;
+     currentUser.dislikedPosts.forEach(function(post){ 
+         if(post._id.equals(id)) {
+            result = true;
+            return false;
+        } 
+    }); 
+    return result;
+} %>

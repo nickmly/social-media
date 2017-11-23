@@ -1,4 +1,5 @@
 <% include partials/header %>
+<% include functions %>
     <div class="ui container">
         <% if(currentUser) { %>
             <h1>Welcome <%= currentUser.username %></h1>
@@ -103,33 +104,58 @@
                             } %>
                         </div>
                         <em>Submitted by <a href="/user/<%= post.author.id %>"><%= post.author.username %></a></em>
-                        <div class="ui two compact buttons">                                                       
-                            <a id="l<%= post._id %>" class="ui labeled button btn-rating btn-like">
-                                <div class="ui left attached button">
-                                    <i class="ui left floated thumbs up icon"></i>
-                                </div>
-                                <div class="ui blue left pointing label">
-                                    <span><%= post.likes %></span>
-                                </div>                                                       
-                            </a>                                   
-                            <a id="d<%= post._id %>" class="ui labeled button btn-rating btn-dislike">
-                                <div class="ui red right pointing label">
-                                    <span><%= post.dislikes %></span>
-                                </div>
-                                <div class="ui right attached button">
-                                   <i class="ui right floated thumbs down icon"></i>
-                                </div>
-                            </a>
-                        </div>                                 
-                        <a href="/post/<%= post._id %>" class="ui animated bottom attached button">
-                            <div class="visible content">
-                                Read More
+                        <% if(currentUser) { %>                        
+                            <div class="ui two compact buttons">
+                                <% if(doesUserLikePost(post._id)) { %>
+                                    <a id="l<%= post._id %>" class="ui labeled button btn-rating btn-like">
+                                        <div class="ui left attached active blue button">
+                                            <i class="ui left floated thumbs up icon"></i>
+                                        </div>
+                                        <div class="ui blue left pointing label">
+                                            <span><%= post.likes %></span>
+                                        </div>                                                       
+                                    </a>
+                                <% } else { %>
+                                    <a id="l<%= post._id %>" class="ui labeled button btn-rating btn-like">
+                                        <div class="ui left attached button">
+                                            <i class="ui left floated thumbs up icon"></i>
+                                        </div>
+                                        <div class="ui blue left pointing label">
+                                            <span><%= post.likes %></span>
+                                        </div>                                                       
+                                    </a>
+                                <% } %>
+                                <% if(doesUserDislikePost(post._id)) { %>
+                                    <a id="d<%= post._id %>" class="ui labeled button btn-rating btn-dislike">
+                                        <div class="ui red right pointing label">
+                                            <span><%= post.dislikes %></span>
+                                        </div>
+                                        <div class="ui right attached active red button">
+                                        <i class="ui right floated thumbs down icon"></i>
+                                        </div>
+                                    </a>
+                                <% } else { %>
+                                    <a id="d<%= post._id %>" class="ui labeled button btn-rating btn-dislike">
+                                        <div class="ui red right pointing label">
+                                            <span><%= post.dislikes %></span>
+                                        </div>
+                                        <div class="ui right attached button">
+                                        <i class="ui right floated thumbs down icon"></i>
+                                        </div>
+                                    </a>
+                                <% } %>
                             </div>
-                            <div class="hidden content">
-                                <i class="chevron circle right icon"></i>
-                            </div>                        
-                        </a>                       
-                    </div>
+                            <% } %>                          
+                            <a href="/post/<%= post._id %>" class="ui animated bottom attached button">
+                                <div class="visible content">
+                                    Read More
+                                </div>
+                                <div class="hidden content">
+                                    <i class="chevron circle right icon"></i>
+                                </div>                        
+                            </a>                       
+                        </div>
+                        
                     <% }); %>
                 </div>
             <% } else { %>

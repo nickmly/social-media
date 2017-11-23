@@ -12,7 +12,7 @@
     <div style="display:none;" class="user-id" id="<%= currentUser._id %>"></div>
 <% } %>
 <script language="javascript">
-        window.sendAjax = function(url, successText) {     
+        window.sendAjax = function(url, successText, otherButton) {     
             var user_id = $(".user-id").attr('id');       
             $.ajax({
                 type: 'GET',                   
@@ -21,7 +21,7 @@
                     user_id: user_id
                 },
                 success: function(data){
-                    successText.text(data);
+                    successText.text(data);                    
                 }
             });
         };
@@ -34,15 +34,11 @@
             var button = element.find("div:first");
             var otherButton = element.siblings().find("div:nth-of-type(2)"); // The dislike button
             var url = "/post/" + post_id + "/like";
-
-            if(otherButton.hasClass("active")) // if we disliked it
-                dislikePost(otherButton.parent()); // remove dislike
-            
-
-            otherButton.removeClass("active").removeClass("red");
+            if(otherButton.hasClass("active"))
+                return dislikePost(otherButton.parent());
             button.toggleClass("blue").toggleClass("active");         
             
-            sendAjax(url, likeText);          
+            sendAjax(url, likeText, otherButton);          
         };
 
         window.dislikePost = function(element) {
@@ -52,15 +48,12 @@
             var dislikeText = element.find("div:first > span");
             var button = element.find("div:nth-of-type(2)");
             var otherButton = element.siblings().find("div:first"); // The like button
-            var url = "/post/" + post_id + "/dislike";
-
-            if(otherButton.hasClass("active")) // if we liked it
-                likePost(otherButton.parent()); // remove like
-
-            otherButton.removeClass("active").removeClass("blue");
+            var url = "/post/" + post_id + "/dislike";      
+            if(otherButton.hasClass("active"))
+                return likePost(otherButton.parent());
             button.toggleClass("red").toggleClass("active");            
             
-            sendAjax(url, dislikeText);
+            sendAjax(url, dislikeText, otherButton);
         };
 
         
