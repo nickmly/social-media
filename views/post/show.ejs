@@ -61,6 +61,12 @@
                         </div>
                         <div class="description">
                              <em>By <a href="/user/<%= comment.author.id %>"><%= comment.author.username %></a></em>
+                             <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                                <a class="ui mini right floated orange basic button" href="/post/<%= post._id %>/comment/<%= comment._id %>/edit">Edit</a>
+                                <form style="display: inline;" action="/post/<%= post._id %>/comment/<%= comment._id %>?_method=DELETE" method="POST">
+                                    <button class="ui mini right floated red basic button">Delete</button>
+                                </form>
+                             <% } %>
                         </div>
                     </div>
                 </div>     

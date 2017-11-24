@@ -9,7 +9,8 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser')
     passport = require('passport'),
-    LocalStrategy = require('passport-local');
+    LocalStrategy = require('passport-local'),
+    methodOverride = require('method-override');
 
 ////////////////////////////////
 ////////////////////////////////
@@ -23,6 +24,8 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 // For flash messages
 app.use(flash());
+// For using PUT and DELETE requests
+app.use(methodOverride("_method"));
 
 ////////////////////////////////
 // MODELS
