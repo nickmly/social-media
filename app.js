@@ -14,8 +14,9 @@ var express = require('express'),
 
 ////////////////////////////////
 ////////////////////////////////
-// Connecting with database, this username/password combo doesn't really matter for this demo so it is visible in the repo
-mongoose.connect("mongodb://admin:crazypassword@ds113606.mlab.com:13606/social-media"); 
+
+// Connecting with database
+mongoose.connect(process.env.DATABASEURL); 
 // Use body parser
 app.use(bodyParser.urlencoded({extended: true}));
 // Use public directory 
@@ -73,6 +74,7 @@ app.use(authRoutes);
 app.use(postRoutes);
 app.use(commentRoutes);
 app.use(userRoutes);
+
 
 // SEED DB
 // User.remove({}, function(err){
